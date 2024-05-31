@@ -106,7 +106,7 @@ def icmppacket(data): #internet control message protocol
 
 #unpack tcp (Ip address)
 def tcpsegment(data):
-    (src_port,dst_port,sequence,acknowledgement, offset_reserved_flags) = struct.unpack('! H H L L H',data[14:])
+    (src_port,dst_port,sequence,acknowledgement, offset_reserved_flags) = struct.unpack('! H H L L H',data[:14])
     #H stands for 2 bytes and L stands for 4 bytes
     offset=(offset_reserved_flags >> 12) * 4# bit shift 12 the entire chunk to get rid of flag and reserved part
     flag_urg= (offset_reserved_flags & 32) >>5
