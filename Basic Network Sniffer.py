@@ -46,6 +46,26 @@ def ip_data(data):
 def ipv4(address):
     return '.'.join(map(str, address))  # takes all chunks and converts them to string and concatenate them with .
 
+#unpack icmp packet
+def icmppacket(data): #internet control message protocol
+    icmptype, code, checksum = struct.unpack('! B B H',data[:4])
+    #grab first 4 bytes from data
+    return icmptype, code, checksum, data[4:]
+
+#unpack tcp (Ip address)
+def tcpsegment(data):
+    (src_port,dst_port,sequence,acknowledgement, offset_reserved_flags) = struct.unpack('! H H L L',data[14:])
+    offset=(offset_reserved_flags >> 12) * 4# bit shift 12 the entire chunk to get rid of flag and reserved part
+    flag_urg= (offset_reserved_flags & 32) >>5
+    flag_ack= (offset_reserved_flags & 16) >>4
+    flag_psh= (offset_reserved_flags & 8) >>3
+    flag_rst= (offset_reserved_flags & 4) >>2
+    flag_syn= (offset_reserved_flags & 2) >>1
+    flag_fin= (offset_reserved_flags & 1)
+    return src_port,dst_port,sequence,acknowledgement, flag_psh, flag_ack, flag_fin, flag_rst, flag_syn, flag_urg, data[offset:]
+
+
+
 
 if __name__ == "__main__":
     printmac()
