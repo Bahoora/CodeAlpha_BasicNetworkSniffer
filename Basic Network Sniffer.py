@@ -16,7 +16,7 @@ DATA_TAB_4 = "\t\t\t\t "
 
 def printmac():
     host = socket.gethostbyname(socket.gethostname())  # gets ipV4 address of internet
-    conn = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.IPPROTO_IP)
+    conn = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
     # used to create a raw socket for packet manipulation
 
     while True:
